@@ -4,7 +4,7 @@ from models.playlist import Playlist
 from services.analyzer import GenreAnalyzer
 from services.exporter import PlaylistExporter
 from services.storage import StorageManager
-(())
+
 from utils.decorators import log_action
 from utils.validators import Validator
 
@@ -22,6 +22,7 @@ def main():
         print("5. Export to M3U")
         print("6. Save to JSON")
         print("7. Export to CSV")
+        print("8. Show long songs")
         print("0. Exit")
 
         choice = input("Choose an option: ")
@@ -82,6 +83,12 @@ def main():
 
         elif choice == "7":
             StorageManager.export_to_csv(playlist)
+
+        elif choice == "8":
+            print("\nSongs longer than 200 seconds:")
+
+            for song in playlist.long_songs_generator(200):
+                print(song)
 
         elif choice == "0":
             print("Goodbye!")
