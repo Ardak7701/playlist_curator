@@ -3,7 +3,7 @@ from models.playlist import Playlist
 from services.analyzer import GenreAnalyzer
 from services.exporter import M3UExporter
 from services.storage import Recommender
-from utils.file_handler import FileHandler
+from utils.validators import FileHandler
 
 def main():
     my_playlist = Playlist("My Final Project Playlist")

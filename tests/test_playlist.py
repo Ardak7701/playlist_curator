@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     def test_file_handler_json(self):
         """Проверка сохранения данных (Data Persistence)."""
-        from utils.file_handler import FileHandler
+        from utils.validators import FileHandler
         import os
         data = {"count": 1}
         FileHandler.save_to_json(data, "temp.json")
