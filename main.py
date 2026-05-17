@@ -1,68 +1,95 @@
 from models.song import Song
 from models.playlist import Playlist
+
 from services.analyzer import GenreAnalyzer
-from services.exporter import M3UExporter
-from services.storage import Recommender
-from utils.validators import FileHandler
+from services.exporter import PlaylistExporter
+from services.storage import StorageManager
 
+from utils.decorators import log_action
+from utils.validators import Validator
+
+
+@log_action
 def main():
-    my_playlist = Playlist("My Final Project Playlist")
-    
+    playlist = Playlist("My Playlist")
+
     while True:
-        print("\n" + "="*30)
-        print("  PLAYLIST CURATOR SYSTEM  ")
-        print("="*30)
-        print("1. Add New Song")
-        print("2. View Genre Analysis")
-        print("3. Get Recommendations")
-        print("4. Export to M3U")
-        print("5. Exit")
-        
-        choice = input("\nSelect an option (1-5): ")
+        print("\n=== PLAYLIST CURATOR ===")
+        print("1. Add song")
+        print("2. Remove song")
+        print("3. Show playlist")
+        print("4. Analyze genres")
+        print("5. Export to M3U")
+        print("6. Save to JSON")
+        print("7. Export to CSV")
+        print("0. Exit")
 
-        if choice == '1':
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            title = input("Song title: ")
+
+            if not Validator.validate_title(title):
+                print("Invalid song title.")
+                continue
+
+            artist = input("Artist: ")
+            genre = input("Genre: ")
+
             try:
-                title = input("Enter song title: ")
-                artist = input("Enter artist name: ")
-                genre = input("Enter genre: ")
-                duration = int(input("Enter duration in seconds: "))
-                
-                new_song = Song(title, artist, genre, duration)
-                my_playlist.add_song(new_song)
-                print(f"Successfully added: {new_song}")
+                duration = int(input("Duration (seconds): "))
+
             except ValueError:
-                print("Error: Duration must be a number!")
+                print("Duration must be a number.")
+                continue
 
-        elif choice == '2':
-            stats = GenreAnalyzer.count_genres(my_playlist)
-            print("\nGenre Breakdown:")
-            for genre, count in stats.items():
-                print(f"- {genre}: {count} songs")
+            song = Song(title, artist, genre, duration)
 
-        elif choice == '3':
-            search_genre = input("Enter genre to find similar songs: ")
-            print("\nRecommendations:")
-            # Использование генератора (Iterators/Generators)
-            recommendations = list(Recommender.suggest_similar(my_playlist, search_genre))
-            if recommendations:
-                for rec in recommendations:
-                    print(f"  {rec}")
+            playlist.add_song(song)
+
+            print("Song added successfully.")
+
+        elif choice == "2":
+            title = input("Enter title to remove: ")
+
+            playlist.remove_song(title)
+
+            print("Song removed successfully.")
+
+        elif choice == "3":
+            if len(playlist) == 0:
+                print("Playlist is empty.")
+
             else:
-                print("No songs found in this genre yet.")
+                print("\nPlaylist songs:")
 
-        elif choice == '4':
-            try:
-                fname = input("Enter filename for export (e.g., 'my_hits'): ")
-                path = M3UExporter.export(my_playlist, fname)
-                print(f"Playlist exported successfully to {path}!")
-            except ValueError as e:
-                print(f"Export Error: {e}")
+                for song in playlist:
+                    print(song)
 
-        elif choice == '5':
-            print("Shutting down. Goodbye!")
+        elif choice == "4":
+            stats = GenreAnalyzer.analyze_genres(playlist)
+
+            print("\nGenre statistics:")
+
+            for genre, count in stats.items():
+                print(f"{genre}: {count}")
+
+        elif choice == "5":
+            PlaylistExporter.export_to_m3u(playlist)
+
+        elif choice == "6":
+            StorageManager.save_to_json(playlist)
+
+        elif choice == "7":
+            StorageManager.export_to_csv(playlist)
+
+        elif choice == "0":
+            print("Goodbye!")
             break
+
         else:
-            print("Invalid selection. Try again.")
+            print("Invalid option.")
+
 
 if __name__ == "__main__":
     main()

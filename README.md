@@ -6,21 +6,23 @@ The application allows users to:
 
 - Add and remove songs
 - Analyze genres
-- Find similar songs
-- Export playlists
+- Export playlists to M3U format
 - Save data using JSON and CSV
+- Validate user input using regex
 
 ---
 
 ## Features
 
 - Object-Oriented Programming
+- Inheritance and Polymorphism
+- Encapsulation
+- Iterators
 - Functional Programming
-- Regex Validation
-- Iterators and Generators
-- Custom Decorators
-- JSON and CSV File Support
+- Decorators
+- JSON and CSV support
 - Unit Testing
+- Regex Validation
 - Modular Architecture
 
 ---
@@ -40,5 +42,5 @@ The application allows users to:
 ```text
 models/     -> Core entities
 services/   -> Business logic
-utils/      -> Helper functions and decorators
+utils/      -> Validators and decorators
 tests/      -> Unit tests
