@@ -2,7 +2,7 @@ from models.song import Song
 from models.playlist import Playlist
 from services.analyzer import GenreAnalyzer
 from services.exporter import M3UExporter
-from services.recommender import Recommender
+from services.storage import Recommender
 from utils.file_handler import FileHandler
 
 def main():
