@@ -4,6 +4,10 @@ import os
 
 from models.song import Song
 class StorageManager:
+    """
+    Handles JSON and CSV storage.
+    """
+
     @staticmethod
     def save_to_json(playlist, filename="data/playlist.json"):
         os.makedirs("data", exist_ok=True)
@@ -21,6 +25,7 @@ class StorageManager:
         with open(filename, "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
 
+        print("Playlist saved to JSON successfully.")
 
     @staticmethod
     def load_from_json(filename="data/playlist.json"):
@@ -65,3 +70,4 @@ class StorageManager:
                     song.genre,
                     song.duration
                 ])
+        print("Playlist exported to CSV successfully.")
