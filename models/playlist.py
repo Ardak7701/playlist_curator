@@ -1,11 +1,18 @@
 class Playlist:
     """
     Playlist class containing Song objects.
-    Demonstrates encapsulation and iterators.
+    Demonstrates encapsulation, iterators, generators,
+    collections, and association.
     """
+
     def __init__(self, name):
         self.name = name
         self.__songs = []
+
+    @property
+    def songs(self):
+        """Getter for songs."""
+        return self.__songs
 
     def add_song(self, song):
         self.__songs.append(song)
@@ -26,11 +33,26 @@ class Playlist:
 
         return None
 
-    def get_long_songs(self, min_duration=240):
-        return [
-            song for song in self.__songs
-            if song.duration >= min_duration
-        ]
+    def unique_genres(self):
+        """
+        Demonstrates set usage.
+        """
+        return set(song.genre for song in self.__songs)
+
+    def song_titles_tuple(self):
+        """
+        Demonstrates tuple usage.
+        """
+        return tuple(song._title for song in self.__songs)
+
+    def long_songs_generator(self, minimum_duration):
+        """
+        Custom generator.
+        """
+        for song in self.__songs:
+            if song.duration >= minimum_duration:
+                yield song
+
     def __iter__(self):
         return iter(self.__songs)
 
