@@ -26,6 +26,11 @@ class Playlist:
 
         return None
 
+    def get_long_songs(self, min_duration=240):
+        return [
+            song for song in self.__songs
+            if song.duration >= min_duration
+        ]
     def __iter__(self):
         return iter(self.__songs)
 
